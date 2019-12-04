@@ -1,4 +1,4 @@
 target/
-.idea
+.idea/
 
-/jd2-64-19.iml
+*.iml
