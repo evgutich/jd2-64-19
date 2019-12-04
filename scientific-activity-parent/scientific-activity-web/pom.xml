@@ -17,6 +17,6 @@
     <name>scientific-activity-web</name>
 
     <build>
-        <finalName>${project.artifactId}}</finalName>
+        <finalName>${project.artifactId}</finalName>
     </build>
 </project>
