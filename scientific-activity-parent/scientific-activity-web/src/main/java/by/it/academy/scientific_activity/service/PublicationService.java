@@ -9,4 +9,6 @@ public interface PublicationService {
     List<Publication> getAllPublications();
 
     void addNewPublication(Publication publication);
+    void deletePublication(Long id);
+    void updatePublication(Publication publication);
 }

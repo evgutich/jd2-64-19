@@ -16,7 +16,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @WebServlet(urlPatterns = "/publicationCreate")
-public class PublicationCreateService extends HttpServlet {
+public class PublicationCreateServlet extends HttpServlet {
 
     private PublicationService publicationService = PublicationServiceImpl.getService();
 
