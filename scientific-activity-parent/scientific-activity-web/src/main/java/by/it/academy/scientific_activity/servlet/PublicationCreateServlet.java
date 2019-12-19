@@ -22,7 +22,7 @@ public class PublicationCreateServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.getRequestDispatcher("/WEB-INF/publicationCreate.jsp")
+        req.getRequestDispatcher("/WEB-INF/publication-create.jsp")
                 .forward(req, resp);
     }
 
