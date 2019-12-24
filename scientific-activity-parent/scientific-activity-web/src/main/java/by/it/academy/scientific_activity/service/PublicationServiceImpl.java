@@ -7,12 +7,15 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicLong;
 
 public class PublicationServiceImpl implements PublicationService {
 
     private static final PublicationService INSTANCE = new PublicationServiceImpl();
 
     private final List<Publication> publications;
+
+    private AtomicLong id = new AtomicLong();
 
     public PublicationServiceImpl() {
         publications = new ArrayList<>();
@@ -31,7 +34,7 @@ public class PublicationServiceImpl implements PublicationService {
 
     @Override
     public void addNewPublication(Publication publication) {
-        publication.setId((long) publications.size() + 1);
+        publication.setId(id.incrementAndGet());
         publications.add(publication);
     }
 
@@ -40,20 +43,22 @@ public class PublicationServiceImpl implements PublicationService {
         for (Publication publication : publications) {
             if (publication.getId().equals(id)) {
                 publications.remove(publication);
+                break;
             }
         }
     }
 
     @Override
     public void updatePublication(Publication publication) {
-        for (Publication publ : publications){
-            if (publ.getId().equals(publication.getId())){
+        for (Publication publ : publications) {
+            if (publ.getId().equals(publication.getId())) {
                 publ.setForm(publication.getForm());
                 publ.setType(publication.getType());
                 publ.setTitle(publication.getTitle());
                 publ.setEdition(publication.getEdition());
                 publ.setAuthors(publication.getAuthors());
                 publ.setEntryDate(LocalDate.now());
+                break;
             }
         }
     }

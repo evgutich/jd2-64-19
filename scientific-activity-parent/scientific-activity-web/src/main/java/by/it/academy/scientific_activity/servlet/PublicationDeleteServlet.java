@@ -17,6 +17,15 @@ public class PublicationDeleteServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        deletePublication(req, resp);
+    }
+
+    @Override
+    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        deletePublication(req, resp);
+    }
+
+    private void deletePublication (HttpServletRequest req, HttpServletResponse resp) throws IOException {
         Long id = Long.valueOf(req.getParameter("id"));
         publicationService.deletePublication(id);
         resp.sendRedirect(req.getContextPath() + "/publicationList");

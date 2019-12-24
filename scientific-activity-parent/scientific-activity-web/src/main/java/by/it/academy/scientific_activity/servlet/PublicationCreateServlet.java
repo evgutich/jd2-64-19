@@ -4,6 +4,8 @@ import by.it.academy.scientific_activity.publications.Monograph;
 import by.it.academy.scientific_activity.publications.Publication;
 import by.it.academy.scientific_activity.service.PublicationService;
 import by.it.academy.scientific_activity.service.PublicationServiceImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -18,16 +20,22 @@ import java.util.List;
 @WebServlet(urlPatterns = "/publicationCreate")
 public class PublicationCreateServlet extends HttpServlet {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(PublicationCreateServlet.class);
     private PublicationService publicationService = PublicationServiceImpl.getService();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.getRequestDispatcher("/WEB-INF/publicationCreate.jsp")
+        req.getRequestDispatcher("/WEB-INF/jsp/publication/publication-create.jsp")
                 .forward(req, resp);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String courseId = req.getParameter("courseId");
+
+        LOGGER.info("course id: {}", courseId);
+        log("course id: " + courseId);
+
         String type = req.getParameter("type");
         String title = req.getParameter("title");
         String edition = req.getParameter("edition");
