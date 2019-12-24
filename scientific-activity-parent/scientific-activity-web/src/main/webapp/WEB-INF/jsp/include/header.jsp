@@ -5,6 +5,7 @@
 
 <fmt:setLocale scope="session" value="${param.lang}"/>
 <fmt:setBundle basename="messages"/>
+
 <div style="background: #E0E0E0; height: 55px; padding: 5px;">
     <div style="float: left">
         <h1 style="margin-top: 10px"><fmt:message key="header.app.title"/></h1>

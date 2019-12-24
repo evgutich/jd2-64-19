@@ -21,7 +21,7 @@ public class PublicationListServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         List<Publication> allPublications = publicationService.getAllPublications();
         req.setAttribute("publicationList", allPublications);
-        req.getRequestDispatcher("/WEB-INF/jsp/publication-list.jsp")
+        req.getRequestDispatcher("/WEB-INF/jsp/publication/publication-list.jsp")
                 .forward(req, resp);
     }
 }
