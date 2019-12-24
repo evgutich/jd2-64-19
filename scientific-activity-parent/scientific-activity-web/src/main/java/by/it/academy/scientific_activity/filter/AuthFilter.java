@@ -1,6 +1,8 @@
 package by.it.academy.scientific_activity.filter;
 
 import by.it.academy.scientific_activity.publications.User;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.DispatcherType;
 import javax.servlet.FilterChain;
@@ -15,10 +17,13 @@ import java.io.IOException;
 @WebFilter(urlPatterns = "/*", dispatcherTypes = DispatcherType.REQUEST)
 public class AuthFilter extends HttpFilter {
 
+    private static final Logger logger = LoggerFactory.getLogger(AuthFilter.class);
+
     @Override
     public void doFilter(HttpServletRequest req, HttpServletResponse res, FilterChain chain) throws IOException, ServletException {
         HttpSession session = req.getSession();
 
+        logger.debug("url: {}", req.getRequestURI());
         User user = (User) session.getAttribute("user");
 
         if (user == null
