@@ -50,7 +50,7 @@ public class LoginServlet extends HomeServlet {
 
         if (hasError) {
             req.setAttribute("errorString", errorMsg);
-            req.setAttribute("user", new User(userName, password));
+            req.setAttribute("user", userName);
             req.getRequestDispatcher("/WEB-INF/jsp/login.jsp").forward(req, resp);
         } else {
             resp.sendRedirect(req.getContextPath() + "/home");
