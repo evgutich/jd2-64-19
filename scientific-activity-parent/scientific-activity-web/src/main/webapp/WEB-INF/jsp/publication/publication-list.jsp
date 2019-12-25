@@ -33,6 +33,11 @@
             <td><c:out value="${publication.printRun}"/></td>
             <td><c:out value="${publication.pages}"/></td>
             <td><c:out value="${publication.entryDate}"/></td>
+            <td>
+                <c:if test="${(sessionScope.user.role=='admin' or sessionScope.user==article.author)}">
+                    <a href="${pageContext.request.contextPath}/publicationDelete?publicationId=${publication.id}">Delete</a>
+                    </c:if>
+                </td>
         </tr>
     </c:forEach>
 </table>
