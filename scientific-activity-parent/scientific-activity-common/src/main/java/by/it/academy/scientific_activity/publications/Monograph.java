@@ -1,5 +1,6 @@
 package by.it.academy.scientific_activity.publications;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 
@@ -11,8 +12,8 @@ public class Monograph extends Publication {
     public Monograph() {
     }
 
-    public Monograph(Long id, String type, String title, String edition, List<String> authors, Integer printRun, Integer pages) {
-        super(id, "Monograph", type, title, edition, authors);
+    public Monograph(Long id, String type, String title, String edition, Long author_id, Integer printRun, Integer pages, LocalDate entryDate) {
+        super(id, "Monograph", type, title, edition, author_id, entryDate);
         this.printRun = printRun;
         this.pages = pages;
     }

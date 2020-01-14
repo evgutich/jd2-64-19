@@ -2,8 +2,8 @@ package by.it.academy.scientific_activity.servlet;
 
 import by.it.academy.scientific_activity.publications.Monograph;
 import by.it.academy.scientific_activity.publications.Publication;
-import by.it.academy.scientific_activity.service.PublicationService;
-import by.it.academy.scientific_activity.service.PublicationServiceImpl;
+import by.it.academy.scientific_activity.service.MonographService;
+import by.it.academy.scientific_activity.service.MonographServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -21,7 +22,7 @@ import java.util.List;
 public class PublicationCreateServlet extends HttpServlet {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(PublicationCreateServlet.class);
-    private PublicationService publicationService = PublicationServiceImpl.getService();
+    private MonographService publicationService = MonographServiceImpl.getService();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -39,12 +40,13 @@ public class PublicationCreateServlet extends HttpServlet {
         String type = req.getParameter("type");
         String title = req.getParameter("title");
         String edition = req.getParameter("edition");
+        String authorId = req.getParameter("authorId");
         List<String> authors = new ArrayList<>(Arrays.asList(req.getParameter("authors").split("\n")));
         String printRun = req.getParameter("printRun");
         String pages = req.getParameter("pages");
 
-        Publication publication = new Monograph(null, type, title, edition, authors, Integer.valueOf(printRun), Integer.valueOf(pages));
-        publicationService.addNewPublication(publication);
+        Monograph monograph = new Monograph(null, type, title, edition, Long.valueOf(authorId), Integer.valueOf(printRun), Integer.valueOf(pages), LocalDate.now());
+        publicationService.addNewMonograph(monograph);
 
         resp.sendRedirect(req.getContextPath() + "/publicationList");
     }

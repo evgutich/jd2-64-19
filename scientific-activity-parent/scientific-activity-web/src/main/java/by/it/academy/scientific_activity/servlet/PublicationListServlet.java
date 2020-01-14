@@ -1,8 +1,9 @@
 package by.it.academy.scientific_activity.servlet;
 
+import by.it.academy.scientific_activity.publications.Monograph;
 import by.it.academy.scientific_activity.publications.Publication;
-import by.it.academy.scientific_activity.service.PublicationService;
-import by.it.academy.scientific_activity.service.PublicationServiceImpl;
+import by.it.academy.scientific_activity.service.MonographService;
+import by.it.academy.scientific_activity.service.MonographServiceImpl;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -15,12 +16,12 @@ import java.util.List;
 @WebServlet(urlPatterns = "/publicationList")
 public class PublicationListServlet extends HttpServlet {
 
-    private PublicationService publicationService = PublicationServiceImpl.getService();
+    private MonographService publicationService = MonographServiceImpl.getService();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        List<Publication> allPublications = publicationService.getAllPublications();
-        req.setAttribute("publicationList", allPublications);
+        List<Monograph> allMonographs = publicationService.getAllMonograph();
+        req.setAttribute("publicationList", allMonographs);
         req.getRequestDispatcher("/WEB-INF/jsp/publication/publication-list.jsp")
                 .forward(req, resp);
     }

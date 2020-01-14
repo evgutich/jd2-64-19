@@ -1,7 +1,6 @@
 package by.it.academy.scientific_activity.publications;
 
 import java.time.LocalDate;
-import java.util.List;
 import java.util.Objects;
 
 public abstract class Publication {
@@ -11,20 +10,20 @@ public abstract class Publication {
     private String form;
     private String title;
     private String edition;
-    private List<String> authors;
+    private Long authorId;
     private LocalDate entryDate;
 
     public Publication() {
     }
 
-    public Publication(Long id, String form, String type, String title, String edition, List<String> authors) {
+    public Publication(Long id, String form, String type, String title, String edition, Long author_id, LocalDate entryDate) {
         this.id = id;
         this.form = form;
         this.type = type;
         this.title = title;
         this.edition = edition;
-        this.authors = authors;
-        this.entryDate = LocalDate.now();
+        this.authorId = author_id;
+        this.entryDate = entryDate;
     }
 
     public Long getId() {
@@ -67,12 +66,12 @@ public abstract class Publication {
         this.edition = edition;
     }
 
-    public List<String> getAuthors() {
-        return authors;
+    public Long getAuthorId() {
+        return authorId;
     }
 
-    public void setAuthors(List<String> authors) {
-        this.authors = authors;
+    public void setAuthorId(Long authorId) {
+        this.authorId = authorId;
     }
 
     public LocalDate getEntryDate() {
@@ -93,13 +92,13 @@ public abstract class Publication {
                 Objects.equals(form, that.form) &&
                 Objects.equals(title, that.title) &&
                 Objects.equals(edition, that.edition) &&
-                Objects.equals(authors, that.authors) &&
+                Objects.equals(authorId, that.authorId) &&
                 Objects.equals(entryDate, that.entryDate);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, type, form, title, edition, authors, entryDate);
+        return Objects.hash(id, type, form, title, edition, authorId, entryDate);
     }
 
     @Override
@@ -110,7 +109,7 @@ public abstract class Publication {
                 ", form='" + form + '\'' +
                 ", title='" + title + '\'' +
                 ", edition='" + edition + '\'' +
-                ", authors=" + authors +
+                ", author_id=" + authorId +
                 ", entryDate=" + entryDate +
                 '}';
     }

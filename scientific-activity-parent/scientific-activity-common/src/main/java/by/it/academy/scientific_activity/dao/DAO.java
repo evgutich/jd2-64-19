@@ -12,7 +12,7 @@ public interface DAO<E> {
 
     int update(E e) throws SQLException;
 
-    int delete(E e) throws SQLException;
+    int delete(Long id) throws SQLException;
 
     List<E> getAll() throws SQLException;
 }

@@ -14,6 +14,7 @@
     <modules>
         <module>scientific-activity-common</module>
         <module>scientific-activity-web</module>
+        <module>common-hibernate</module>
     </modules>
 
     <properties>

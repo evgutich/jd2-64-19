@@ -1,7 +1,7 @@
 package by.it.academy.scientific_activity.servlet;
 
-import by.it.academy.scientific_activity.service.PublicationService;
-import by.it.academy.scientific_activity.service.PublicationServiceImpl;
+import by.it.academy.scientific_activity.service.MonographService;
+import by.it.academy.scientific_activity.service.MonographServiceImpl;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -13,7 +13,7 @@ import java.io.IOException;
 @WebServlet (urlPatterns = "/publicationDelete")
 public class PublicationDeleteServlet extends HttpServlet {
 
-    private PublicationService publicationService = PublicationServiceImpl.getService();
+    private MonographService publicationService = MonographServiceImpl.getService();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -27,7 +27,7 @@ public class PublicationDeleteServlet extends HttpServlet {
 
     private void deletePublication (HttpServletRequest req, HttpServletResponse resp) throws IOException {
         Long id = Long.valueOf(req.getParameter("id"));
-        publicationService.deletePublication(id);
+        publicationService.deleteMonograph(id);
         resp.sendRedirect(req.getContextPath() + "/publicationList");
     }
 }
