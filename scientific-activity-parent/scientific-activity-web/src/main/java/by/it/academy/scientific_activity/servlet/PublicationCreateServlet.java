@@ -1,7 +1,6 @@
 package by.it.academy.scientific_activity.servlet;
 
 import by.it.academy.scientific_activity.publications.Monograph;
-import by.it.academy.scientific_activity.publications.Publication;
 import by.it.academy.scientific_activity.service.MonographService;
 import by.it.academy.scientific_activity.service.MonographServiceImpl;
 import org.slf4j.Logger;
@@ -22,7 +21,7 @@ import java.util.List;
 public class PublicationCreateServlet extends HttpServlet {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(PublicationCreateServlet.class);
-    private MonographService publicationService = MonographServiceImpl.getService();
+    private MonographService monographService = MonographServiceImpl.getService();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -46,7 +45,7 @@ public class PublicationCreateServlet extends HttpServlet {
         String pages = req.getParameter("pages");
 
         Monograph monograph = new Monograph(null, type, title, edition, Long.valueOf(authorId), Integer.valueOf(printRun), Integer.valueOf(pages), LocalDate.now());
-        publicationService.addNewMonograph(monograph);
+        monographService.addNewMonograph(monograph);
 
         resp.sendRedirect(req.getContextPath() + "/publicationList");
     }
