@@ -1,29 +1,45 @@
 package by.it.academy.scientific_activity;
 
-import by.it.academy.scientific_activity.dao.PersonDAO;
-import by.it.academy.scientific_activity.dao.impl.PersonDaoImpl;
-import by.it.academy.scientific_activity.embedded.Address;
-import by.it.academy.scientific_activity.entity.Person;
+import by.it.academy.scientific_activity.entity.Department;
+import by.it.academy.scientific_activity.entity.Employee;
+import by.it.academy.scientific_activity.entity.EmployeeDetail;
+import by.it.academy.scientific_activity.entity.Meeting;
 import by.it.academy.scientific_activity.util.HibernateUtil;
+import lombok.extern.slf4j.Slf4j;
+import org.hibernate.Session;
 
-import java.util.Optional;
+import java.time.LocalDateTime;
+import java.util.HashSet;
 
+@Slf4j
 public class App {
 
-    private static final PersonDAO personDAO = PersonDaoImpl.getInstance();
-
     public static void main(String[] args) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        session.beginTransaction();
+        Employee e = new Employee(null, "Ivan", "Ivanov", LocalDateTime.now(), null, null, new HashSet<>());
 
-        Person person = new Person(null, "Igor", "Ivanov", null, 25, new Address("Sadovaya", "Minsk", "225215"));
-        personDAO.create(person);
+        EmployeeDetail detail = new EmployeeDetail(null, "street", "city", "country", null);
+        e.setEmployeeDetail(detail);
+        detail.setEmployee(e);
+        session.save(e);
+        log.info(e.toString());
 
-        Optional<Person> personFromDB = personDAO.read(1L);
+        Department department = new Department(null, "Dev", new HashSet<>());
+        e.setDepartment(department);
+        session.save(e);
+        session.save(department);
+        log.info(e.toString());
 
-        Person personForUpdate = new Person(1L, "Stepan", "Razin", null, 25, new Address("Sadovaya", "Minsk", "225215"));
-        personDAO.update(personForUpdate);
+        Meeting meeting = new Meeting(null, "Java EE", LocalDateTime.now(), new HashSet<>());
+        e.getMeetingList().add(meeting);
+        meeting.getEmployees().add(e);
+        session.saveOrUpdate(e);
+        session.save(meeting);
+        log.info(e.toString());
 
-        personDAO.delete(person);
-
+        session.getTransaction().commit();
+        session.close();
         HibernateUtil.shutDown();
     }
 }
