@@ -13,7 +13,7 @@ import java.io.IOException;
 @WebServlet (urlPatterns = "/publicationDelete")
 public class PublicationDeleteServlet extends HttpServlet {
 
-    private MonographService publicationService = MonographServiceImpl.getService();
+    private MonographService monographService = MonographServiceImpl.getService();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -27,7 +27,7 @@ public class PublicationDeleteServlet extends HttpServlet {
 
     private void deletePublication (HttpServletRequest req, HttpServletResponse resp) throws IOException {
         Long id = Long.valueOf(req.getParameter("id"));
-        publicationService.deleteMonograph(id);
+        monographService.deleteMonograph(id);
         resp.sendRedirect(req.getContextPath() + "/publicationList");
     }
 }
