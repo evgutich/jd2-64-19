@@ -1,28 +1,28 @@
 package by.it.academy.scientific_activity.dao;
 
-import by.it.academy.scientific_activity.entity.EmployeeHQL;
+import by.it.academy.scientific_activity.entity.EmployeeCriteria;
 
 import java.util.List;
 
 public interface EmployeeDao {
 
-    List<EmployeeHQL> getAll();
+    List<EmployeeCriteria> getAll();
 
-    List<EmployeeHQL> getByName(String name);
+    List<EmployeeCriteria> getByName(String name);
 
-    List<EmployeeHQL> getAllWithNameNotNull();
+    List<EmployeeCriteria> getAllWithNameNotNull();
 
-    List<EmployeeHQL> getSalaryGraterThan(Double salary);
+    List<EmployeeCriteria> getSalaryGraterThan(Double salary);
 
-    List<EmployeeHQL> getSalaryGraterThanOrderDesc(Double salary);
+    List<EmployeeCriteria> getSalaryGraterThanOrderDesc(Double salary);
 
-    List<EmployeeHQL> getSalaryLessOrEqual(Double salary);
+    List<EmployeeCriteria> getSalaryLessOrEqual(Double salary);
 
-    List<EmployeeHQL> getByAgeBetween(Integer from, Integer to);
+    List<EmployeeCriteria> getByAgeBetween(Integer from, Integer to);
 
-    List<EmployeeHQL> getByAgeAndName(String name, Integer age);
+    List<EmployeeCriteria> getByAgeAndName(String name, Integer age);
 
-    List<EmployeeHQL> getByAgeOrName(String name, Integer age);
+    List<EmployeeCriteria> getByAgeOrName(String name, Integer age);
 
     long getEmployeeCount();
 

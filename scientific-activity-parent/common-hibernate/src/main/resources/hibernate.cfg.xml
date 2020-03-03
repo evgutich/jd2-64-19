@@ -15,7 +15,7 @@
         <mapping class="by.it.academy.scientific_activity.entity.EmployeeDetail"/>
         <mapping class="by.it.academy.scientific_activity.entity.Department"/>
         <mapping class="by.it.academy.scientific_activity.entity.Meeting"/>
-        <mapping class="by.it.academy.scientific_activity.entity.EmployeeHQL"/>
-        <mapping class="by.it.academy.scientific_activity.entity.DepartmentHQL"/>
+        <mapping class="by.it.academy.scientific_activity.entity.EmployeeCriteria"/>
+        <mapping class="by.it.academy.scientific_activity.entity.DepartmentCriteria"/>
     </session-factory>
 </hibernate-configuration>
