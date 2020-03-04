@@ -1,12 +1,16 @@
 package by.it.academy.scientific_activity.dao.impl;
 
 import by.it.academy.scientific_activity.dao.EmployeeDao;
+import by.it.academy.scientific_activity.entity.DepartmentCriteria;
+import by.it.academy.scientific_activity.entity.EmployeeCriteria;
 import by.it.academy.scientific_activity.entity.EmployeeHQL;
 import by.it.academy.scientific_activity.util.HibernateUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 
+import javax.persistence.criteria.*;
 import java.util.List;
 
 @Slf4j
@@ -14,144 +18,137 @@ public class EmployeeDaoImpl implements EmployeeDao {
 
     private static final EmployeeDaoImpl INSTANCE = new EmployeeDaoImpl();
 
+    private SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+    private CriteriaBuilder criteriaBuilder = sessionFactory.getCriteriaBuilder();
+
+
     public static EmployeeDaoImpl getInstance() {
         return INSTANCE;
     }
 
     @Override
-    public List<EmployeeHQL> getAll() {
-        Session session = HibernateUtil.getSessionFactory().openSession();
-        session.beginTransaction();
-        Query<EmployeeHQL> query = session.createQuery("from EmployeeHQL", EmployeeHQL.class);
-        List<EmployeeHQL> employees = query.list();
+    public List<EmployeeCriteria> getAll() {
+        CriteriaQuery<EmployeeCriteria> query = criteriaBuilder.createQuery(EmployeeCriteria.class);
+        Root<EmployeeCriteria> root = query.from(EmployeeCriteria.class);
+        query.select(root);
+        List<EmployeeCriteria> employees = sessionFactory.openSession().createQuery(query).getResultList();
         return employees;
     }
 
     @Override
-    public List<EmployeeHQL> getByName(String name) {
-        Session session = HibernateUtil.getSessionFactory().openSession();
-        session.beginTransaction();
-        Query<EmployeeHQL> query = session.createQuery("select e from EmployeeHQL e where e.name =: name", EmployeeHQL.class);
-        query.setParameter("name", name);
-        List<EmployeeHQL> employees = query.list();
+    public List<EmployeeCriteria> getByName(String name) {
+        CriteriaQuery<EmployeeCriteria> query = criteriaBuilder.createQuery(EmployeeCriteria.class);
+        Root<EmployeeCriteria> root = query.from(EmployeeCriteria.class);
+        query.select(root).where(criteriaBuilder.equal(root.get("name"), name));
+        List<EmployeeCriteria> employees = sessionFactory.openSession().createQuery(query).getResultList();
         return employees;
     }
 
     @Override
-    public List<EmployeeHQL> getAllWithNameNotNull() {
-        Session session = HibernateUtil.getSessionFactory().openSession();
-        session.beginTransaction();
-        Query<EmployeeHQL> query = session.createQuery("select e from EmployeeHQL e where e.name is not null", EmployeeHQL.class);
-        List<EmployeeHQL> employees = query.list();
+    public List<EmployeeCriteria> getAllWithNameNotNull() {
+        CriteriaQuery<EmployeeCriteria> query = criteriaBuilder.createQuery(EmployeeCriteria.class);
+        Root<EmployeeCriteria> root = query.from(EmployeeCriteria.class);
+        query.select(root).where(criteriaBuilder.isNotNull(root.get("name")));
+        List<EmployeeCriteria> employees = sessionFactory.openSession().createQuery(query).getResultList();
         return employees;
     }
 
     @Override
-    public List<EmployeeHQL> getSalaryGraterThan(Double salary) {
-        Session session = HibernateUtil.getSessionFactory().openSession();
-        session.beginTransaction();
-        Query<EmployeeHQL> query = session.createQuery("select e from EmployeeHQL e where e.salary >: salary", EmployeeHQL.class);
-        query.setParameter("salary", salary);
-        List<EmployeeHQL> employees = query.list();
+    public List<EmployeeCriteria> getSalaryGraterThan(Double salary) {
+        CriteriaQuery<EmployeeCriteria> query = criteriaBuilder.createQuery(EmployeeCriteria.class);
+        Root<EmployeeCriteria> root = query.from(EmployeeCriteria.class);
+        query.select(root).where(criteriaBuilder.gt(root.get("salary"), salary));
+        List<EmployeeCriteria> employees = sessionFactory.openSession().createQuery(query).getResultList();
         return employees;
     }
 
     @Override
-    public List<EmployeeHQL> getSalaryGraterThanOrderDesc(Double salary) {
-        Session session = HibernateUtil.getSessionFactory().openSession();
-        session.beginTransaction();
-        Query<EmployeeHQL> query = session.createQuery("select e from EmployeeHQL e where e.salary >: salary order by e.salary desc", EmployeeHQL.class);
-        query.setParameter("salary", salary);
-        List<EmployeeHQL> employees = query.list();
+    public List<EmployeeCriteria> getSalaryGraterThanOrderDesc(Double salary) {
+        CriteriaQuery<EmployeeCriteria> query = criteriaBuilder.createQuery(EmployeeCriteria.class);
+        Root<EmployeeCriteria> root = query.from(EmployeeCriteria.class);
+        query.select(root).where(criteriaBuilder.gt(root.get("salary"), salary)).orderBy(criteriaBuilder.desc(root.get("salary")));
+        List<EmployeeCriteria> employees = sessionFactory.openSession().createQuery(query).getResultList();
         return employees;
     }
 
     @Override
-    public List<EmployeeHQL> getSalaryLessOrEqual(Double salary) {
-        Session session = HibernateUtil.getSessionFactory().openSession();
-        session.beginTransaction();
-        Query<EmployeeHQL> query = session.createQuery("select e from EmployeeHQL e where e.salary <=: salary", EmployeeHQL.class);
-        query.setParameter("salary", salary);
-        List<EmployeeHQL> employees = query.list();
+    public List<EmployeeCriteria> getSalaryLessOrEqual(Double salary) {
+        CriteriaQuery<EmployeeCriteria> query = criteriaBuilder.createQuery(EmployeeCriteria.class);
+        Root<EmployeeCriteria> root = query.from(EmployeeCriteria.class);
+        query.select(root).where(criteriaBuilder.le(root.get("salary"), salary));
+        List<EmployeeCriteria> employees = sessionFactory.openSession().createQuery(query).getResultList();
         return employees;
     }
 
     @Override
-    public List<EmployeeHQL> getByAgeBetween(Integer from, Integer to) {
-        Session session = HibernateUtil.getSessionFactory().openSession();
-        session.beginTransaction();
-        Query<EmployeeHQL> query = session.createQuery("select e from EmployeeHQL e where e.age >=: from and e.age <=: to", EmployeeHQL.class);
-        query.setParameter("from", from);
-        query.setParameter("to", to);
-        List<EmployeeHQL> employees = query.list();
+    public List<EmployeeCriteria> getByAgeBetween(Integer from, Integer to) {
+        CriteriaQuery<EmployeeCriteria> query = criteriaBuilder.createQuery(EmployeeCriteria.class);
+        Root<EmployeeCriteria> root = query.from(EmployeeCriteria.class);
+        query.select(root).where(criteriaBuilder.between(root.get("age"), from, to));
+        List<EmployeeCriteria> employees = sessionFactory.openSession().createQuery(query).getResultList();
         return employees;
     }
 
     @Override
-    public List<EmployeeHQL> getByAgeAndName(String name, Integer age) {
-        Session session = HibernateUtil.getSessionFactory().openSession();
-        session.beginTransaction();
-        Query<EmployeeHQL> query = session.createQuery("select e from EmployeeHQL e where e.name =: name and e.age =: age", EmployeeHQL.class);
-        query.setParameter("name", name);
-        query.setParameter("age", age);
-        List<EmployeeHQL> employees = query.list();
+    public List<EmployeeCriteria> getByAgeAndName(String name, Integer age) {
+        CriteriaQuery<EmployeeCriteria> query = criteriaBuilder.createQuery(EmployeeCriteria.class);
+        Root<EmployeeCriteria> root = query.from(EmployeeCriteria.class);
+        Predicate predicate = criteriaBuilder.and(criteriaBuilder.equal(root.get("name"), name), criteriaBuilder.equal(root.get("age"), age));
+        query.select(root).where(predicate);
+        List<EmployeeCriteria> employees = sessionFactory.openSession().createQuery(query).getResultList();
         return employees;
     }
 
     @Override
-    public List<EmployeeHQL> getByAgeOrName(String name, Integer age) {
-        Session session = HibernateUtil.getSessionFactory().openSession();
-        session.beginTransaction();
-        Query<EmployeeHQL> query = session.createQuery("select e from EmployeeHQL e where e.name =: name or e.age =: age", EmployeeHQL.class);
-        query.setParameter("name", name);
-        query.setParameter("age", age);
-        List<EmployeeHQL> employees = query.list();
+    public List<EmployeeCriteria> getByAgeOrName(String name, Integer age) {
+        CriteriaQuery<EmployeeCriteria> query = criteriaBuilder.createQuery(EmployeeCriteria.class);
+        Root<EmployeeCriteria> root = query.from(EmployeeCriteria.class);
+        Predicate predicate = criteriaBuilder.or(criteriaBuilder.equal(root.get("name"), name), criteriaBuilder.equal(root.get("age"), age));
+        query.select(root).where(predicate);
+        List<EmployeeCriteria> employees = sessionFactory.openSession().createQuery(query).getResultList();
         return employees;
     }
 
     @Override
     public long getEmployeeCount() {
-        Session session = HibernateUtil.getSessionFactory().openSession();
-        session.beginTransaction();
-        Query<Long> query = session.createQuery("select count(e) from EmployeeHQL e", Long.class);
-        Long count = query.getSingleResult();
+        CriteriaQuery<Long> query = criteriaBuilder.createQuery(Long.class);
+        query.select(criteriaBuilder.count(query.from(EmployeeCriteria.class)));
+        long count = sessionFactory.openSession().createQuery(query).getSingleResult();
         return count;
     }
 
     @Override
     public Double getAverageSalary() {
-        Session session = HibernateUtil.getSessionFactory().openSession();
-        session.beginTransaction();
-        Query<Double> query = session.createQuery("select avg(e.salary) from EmployeeHQL e", Double.class);
-        Double avg = query.getSingleResult();
-        return avg;
+        CriteriaQuery<Double> query = criteriaBuilder.createQuery(Double.class);
+        query.select(criteriaBuilder.avg(query.from(EmployeeCriteria.class).get("salary")));
+        Double avgSalary = sessionFactory.openSession().createQuery(query).getSingleResult();
+        return avgSalary;
     }
 
     @Override
     public Double getMaxSalary() {
-        Session session = HibernateUtil.getSessionFactory().openSession();
-        session.beginTransaction();
-        Query<Double> query = session.createQuery("select max(e.salary) from EmployeeHQL e", Double.class);
-        Double maxSalary = query.getSingleResult();
+        CriteriaQuery<Double> query = criteriaBuilder.createQuery(Double.class);
+        query.select(criteriaBuilder.max(query.from(EmployeeCriteria.class).get("salary")));
+        Double maxSalary = sessionFactory.openSession().createQuery(query).getSingleResult();
         return maxSalary;
     }
 
     @Override
     public int getMinAge() {
-        Session session = HibernateUtil.getSessionFactory().openSession();
-        session.beginTransaction();
-        Query<Integer> query = session.createQuery("select min (e.age) from EmployeeHQL e", Integer.class);
-        Integer minAge = query.getSingleResult();
+        CriteriaQuery<Integer> query = criteriaBuilder.createQuery(Integer.class);
+        query.select(criteriaBuilder.min(query.from(EmployeeCriteria.class).get("age")));
+        Integer minAge = sessionFactory.openSession().createQuery(query).getSingleResult();
         return minAge;
     }
 
     @Override
     public Double getAverageSalaryByDep(Long depId) {
-        Session session = HibernateUtil.getSessionFactory().openSession();
-        session.beginTransaction();
-        Query<Double> query = session.createQuery("select avg (e.salary) from EmployeeHQL e where e.department.id = : depId", Double.class);
-        query.setParameter("depId", depId);
-        Double minAge = query.getSingleResult();
+        CriteriaQuery<Double> query = criteriaBuilder.createQuery(Double.class);
+        Root<EmployeeCriteria> employee = query.from(EmployeeCriteria.class);
+
+        Join<EmployeeCriteria, DepartmentCriteria> employeeJoin = employee.join("department", JoinType.INNER);
+        query.select(criteriaBuilder.avg(employee.get("salary"))).where(criteriaBuilder.equal(employeeJoin.get("id"), depId));
+        Double minAge = sessionFactory.openSession().createQuery(query).getSingleResult();
         return minAge;
     }
 }
