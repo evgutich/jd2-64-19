@@ -10,6 +10,7 @@
     </parent>
 
     <artifactId>scientific-activity-spring</artifactId>
+    <name>scientific-activity-spring</name>
 
     <properties>
         <spring.version>5.2.3.RELEASE</spring.version>

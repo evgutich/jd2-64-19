@@ -25,7 +25,7 @@
     </bean>
 
     <bean id="department" class="by.it.academy.scientific_activity.beans.Department"
-          p:id="1" p:name="back-end">
+          p:id="1" p:name="HR">
         <property name="personList">
             <list>
                 <ref bean="person"/>

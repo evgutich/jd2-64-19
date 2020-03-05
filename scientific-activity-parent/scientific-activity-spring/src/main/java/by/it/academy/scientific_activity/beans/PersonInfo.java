@@ -1,8 +1,6 @@
 package by.it.academy.scientific_activity.beans;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDate;
 
@@ -11,6 +9,8 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class PersonInfo {
     private Long id;
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     private Person person;
     private Double salary;
     private LocalDate dateOfBirth;
