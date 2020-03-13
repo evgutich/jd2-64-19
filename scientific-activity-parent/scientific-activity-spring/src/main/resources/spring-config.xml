@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+        http://www.springframework.org/schema/context
+        https://www.springframework.org/schema/context/spring-context.xsd">
+
+    <bean id="person" class="by.it.academy.scientific_activity.beans.Person"
+          p:id="1" p:name="Ivan" p:surname="Ivanov" p:personInfo-ref="personInfo"
+          p:department-ref="department" p:meetings-ref="meetings"/>
+
+    <bean id="personInfo" class="by.it.academy.scientific_activity.beans.PersonInfo"
+          p:id="1" p:person-ref="person" p:salary="300" p:dateOfBirth="#{T(java.time.LocalDate).of(1999,1,1)}"/>
+
+    <bean id="meetings" class="by.it.academy.scientific_activity.beans.Meeting"
+          p:id="1" p:name="SOAD">
+        <property name="personList">
+            <list>
+                <ref bean="person"/>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="department" class="by.it.academy.scientific_activity.beans.Department"
+          p:id="1" p:name="HR">
+        <property name="personList">
+            <list>
+                <ref bean="person"/>
+            </list>
+        </property>
+    </bean>
+
+</beans>
