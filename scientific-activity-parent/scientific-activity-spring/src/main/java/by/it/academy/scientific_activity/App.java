@@ -26,8 +26,6 @@ public class App {
         EmployeeDetailRepository employeeDetailRepository = context.getBean(EmployeeDetailRepository.class);
         MeetingRepository meetingRepository = context.getBean(MeetingRepository.class);
 
-//        DepartmentService departmentService = context.getBean(DepartmentService.class);
-
         Department dev = new Department(null, "dev", new ArrayList<>());
         Department hr = new Department(null, "HR", new ArrayList<>());
 
