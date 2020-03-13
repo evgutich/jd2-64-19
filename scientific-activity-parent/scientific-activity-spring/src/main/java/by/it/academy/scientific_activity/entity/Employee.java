@@ -1,8 +1,6 @@
 package by.it.academy.scientific_activity.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
@@ -12,7 +10,9 @@ import java.util.List;
 
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
+@AllArgsConstructor()
+@ToString(exclude = {"department"})
+@EqualsAndHashCode(exclude = {"department", "employeeDetail", "meetings"})
 @Entity
 public class Employee {
     @Id
@@ -22,11 +22,11 @@ public class Employee {
     private String lastName;
     @CreationTimestamp
     private LocalDateTime dateTime;
-    @OneToOne(mappedBy = "employee", cascade = CascadeType.PERSIST)
+    @OneToOne(mappedBy = "employee", cascade = CascadeType.ALL)
     private EmployeeDetail employeeDetail;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "DEPARTMENT_ID")
     private Department department;
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Meeting> meetings = new ArrayList<>();
 }

@@ -1,36 +1,66 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns:p="http://www.springframework.org/schema/p"
        xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:jpa="http://www.springframework.org/schema/data/jpa"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
-        http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+        http://www.springframework.org/schema/beans/spring-beans.xsd
         http://www.springframework.org/schema/context
-        https://www.springframework.org/schema/context/spring-context.xsd">
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx.xsd
+        http://www.springframework.org/schema/data/jpa
+        https://www.springframework.org/schema/data/jpa/spring-jpa.xsd">
 
-    <bean id="person" class="by.it.academy.scientific_activity.beans.Person"
-          p:id="1" p:name="Ivan" p:surname="Ivanov" p:personInfo-ref="personInfo"
-          p:department-ref="department" p:meetings-ref="meetings"/>
+    <context:annotation-config/>
+    <context:component-scan base-package="by.it.academy"/>
+    <jpa:repositories base-package="by.it.academy.scientific_activity.repository"/>
 
-    <bean id="personInfo" class="by.it.academy.scientific_activity.beans.PersonInfo"
-          p:id="1" p:person-ref="person" p:salary="300" p:dateOfBirth="#{T(java.time.LocalDate).of(1999,1,1)}"/>
-
-    <bean id="meetings" class="by.it.academy.scientific_activity.beans.Meeting"
-          p:id="1" p:name="SOAD">
-        <property name="personList">
-            <list>
-                <ref bean="person"/>
-            </list>
+    <bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig">
+        <property name="poolName" value="springHikariCP"/>
+        <property name="driverClassName" value="com.mysql.cj.jdbc.Driver"/>
+        <property name="maximumPoolSize" value="8"/>
+        <property name="jdbcUrl" value="jdbc:mysql://localhost:3306/test?useLegacyDatetimeCode=false&amp;serverTimezone=UTC"/>
+        <property name="dataSourceProperties">
+            <props>
+                <prop key="user">root</prop>
+                <prop key="password">123456</prop>
+            </props>
         </property>
     </bean>
 
-    <bean id="department" class="by.it.academy.scientific_activity.beans.Department"
-          p:id="1" p:name="back-end">
-        <property name="personList">
-            <list>
-                <ref bean="person"/>
-            </list>
+    <bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource"
+          destroy-method="close">
+        <constructor-arg ref="hikariConfig"/>
+    </bean>
+
+    <bean id="entityManagerFactory"
+          class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="persistenceUnitName" value="jpa-unit"/>
+        <property name="jpaVendorAdapter">
+            <bean
+                    class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter"/>
+        </property>
+        <property name="packagesToScan">
+            <list> <value>by.it.academy.scientific_activity.entity</value> </list>
+        </property>
+        <property name="jpaProperties">
+            <props>
+                <prop key="hibernate.dialect">org.hibernate.dialect.MySQL55Dialect</prop>
+                <prop key="hibernate.show_sql">true</prop>
+                <prop key="hibernate.format_sql">false</prop>
+                <prop key="hibernate.hbm2ddl.auto">create</prop>
+            </props>
         </property>
     </bean>
+
+    <bean class="org.springframework.orm.jpa.JpaTransactionManager"
+          id="transactionManager">
+        <property name="entityManagerFactory" ref="entityManagerFactory"/>
+    </bean>
+
+    <tx:annotation-driven/>
 
 </beans>

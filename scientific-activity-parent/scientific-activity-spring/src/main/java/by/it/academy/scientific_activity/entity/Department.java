@@ -1,16 +1,14 @@
 package by.it.academy.scientific_activity.entity;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 @EqualsAndHashCode(exclude = {"employees"})
 @ToString(exclude = {"employees"})
 @Entity
@@ -21,9 +19,9 @@ public class Department {
     private Long departmentId;
     private String departmentName;
     @OneToMany(mappedBy = "department", cascade = CascadeType.ALL)
-    private Set<Employee> employees = new HashSet<>(0);
+    private List<Employee> employees = new ArrayList<>();
 
-    public Department(String departmentName) {
-        this.departmentName = departmentName;
-    }
+//    public Department(String departmentName) {
+//        this.departmentName = departmentName;
+//    }
 }
